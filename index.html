@@ -2,957 +2,811 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <title>
-    Hackathon
-  </title>
-  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-  <style>
-    
-/*
-.chart rect {
-  fill: steelblue;
-}
-*/
-.chart .legend {
-  fill: black;
-  font: 14px sans-serif;
-  text-anchor: start;
-  font-size: 12px;
-}
-
-.chart text {
-  fill: black;
-  font: 10px sans-serif;
-  text-anchor: center;
-}
-
-.chart .label {
-  fill: black;
-  font: 14px sans-serif;
-  text-anchor: end;
-}
-
-/* .bar:hover {
-  fill: brown;
-} */
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-  </style>
-  <style>
-    ul.timeline {
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+      Hackathon
+    </title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <style>
+      ul.timeline {
 
-      list-style-type: none;
+        list-style-type: none;
 
-      position: relative;
+        position: relative;
 
-    }
+      }
 
-    ul.timeline:before {
+      ul.timeline:before {
 
-      content: ' ';
+        content: ' ';
 
-      background: #d4d9df;
+        background: #d4d9df;
 
-      display: inline-block;
+        display: inline-block;
 
-      position: absolute;
+        position: absolute;
 
-      left: 29px;
+        left: 29px;
 
-      width: 2px;
+        width: 2px;
 
-      height: 100%;
+        height: 100%;
 
-      z-index: 400;
+        z-index: 400;
 
-    }
+      }
 
-    ul.timeline > li {
+      ul.timeline > li {
 
-      margin: 20px 0;
+        margin: 20px 0;
 
-      padding-left: 20px;
+        padding-left: 20px;
 
-    }
+      }
 
-    ul.timeline > li:before {
+      ul.timeline > li:before {
 
-      content: ' ';
+        content: ' ';
 
-      background: white;
+        background: white;
 
-      display: inline-block;
+        display: inline-block;
 
-      position: absolute;
+        position: absolute;
 
-      border-radius: 50%;
+        border-radius: 50%;
 
-      border: 3px solid #22c0e8;
+        border: 3px solid #22c0e8;
 
-      left: 20px;
+        left: 20px;
 
-      width: 20px;
+        width: 20px;
 
-      height: 20px;
+        height: 20px;
 
-      z-index: 400;
+        z-index: 400;
 
-    }
-    body{
+      }
+      body{
+        margin-top:20px;
+        background:#eee;
+      }
 
-    margin-top:20px;
+      .cd-horizontal-timeline ol, .cd-horizontal-timeline ul {
 
-    background:#eee;
+        list-style: none;
 
-}
+      }
 
+      .cd-timeline-navigation a:hover, .cd-timeline-navigation a:focus {
 
+        border-color:#313740;
 
+        
 
+      }
 
+      .cd-horizontal-timeline a, .cd-horizontal-timeline a:hover, .cd-horizontal-timeline a:focus{ color:#313740;}
 
+      .cd-horizontal-timeline blockquote, .cd-horizontal-timeline q {
 
-.cd-horizontal-timeline ol, .cd-horizontal-timeline ul {
+        quotes: none;
 
-  list-style: none;
+      }
 
-}
+      .cd-horizontal-timeline blockquote:before, .cd-horizontal-timeline blockquote:after,
 
-.cd-timeline-navigation a:hover, .cd-timeline-navigation a:focus {
+      .cd-horizontal-timeline q:before, .cd-horizontal-timeline q:after {
 
-   border-color:#313740;
+        content: '';
 
-  
+        content: none;
 
-}
+      }
 
-.cd-horizontal-timeline a, .cd-horizontal-timeline a:hover, .cd-horizontal-timeline a:focus{ color:#313740;}
+      .cd-horizontal-timeline table {
 
-.cd-horizontal-timeline blockquote, .cd-horizontal-timeline q {
+        border-collapse: collapse;
 
-  quotes: none;
+        border-spacing: 0;
 
-}
+      }
 
-.cd-horizontal-timeline blockquote:before, .cd-horizontal-timeline blockquote:after,
+      .cd-horizontal-timeline {
 
-.cd-horizontal-timeline q:before, .cd-horizontal-timeline q:after {
+        opacity: 0;
 
-  content: '';
+        margin: 2em auto;
 
-  content: none;
+        -webkit-transition: opacity 0.2s;
 
-}
+        -moz-transition: opacity 0.2s;
 
-.cd-horizontal-timeline table {
+        transition: opacity 0.2s;
 
-  border-collapse: collapse;
+      }
 
-  border-spacing: 0;
+      .cd-horizontal-timeline::before {
 
-}
+        /* never visible - this is used in jQuery to check the current MQ */
 
-.cd-horizontal-timeline {
+        content: 'mobile';
 
-  opacity: 0;
+        display: none;
 
-  margin: 2em auto;
+      }
 
-  -webkit-transition: opacity 0.2s;
+      .cd-horizontal-timeline.loaded {
 
-  -moz-transition: opacity 0.2s;
+        /* show the timeline after events position has been set (using JavaScript) */
 
-  transition: opacity 0.2s;
+        opacity: 1;
 
-}
+      }
 
-.cd-horizontal-timeline::before {
+      .cd-horizontal-timeline .timeline {
 
-  /* never visible - this is used in jQuery to check the current MQ */
+        position: relative;
 
-  content: 'mobile';
+        height: 100px;
 
-  display: none;
+        width: 90%;
 
-}
+        max-width: 800px;
 
-.cd-horizontal-timeline.loaded {
+        margin: 0 auto;
 
-  /* show the timeline after events position has been set (using JavaScript) */
+      }
 
-  opacity: 1;
+      .cd-horizontal-timeline .events-wrapper {
 
-}
+        position: relative;
 
-.cd-horizontal-timeline .timeline {
+        height: 100%;
 
-  position: relative;
+        margin: 0 40px;
 
-  height: 100px;
+        overflow: hidden;
 
-  width: 90%;
+      }
 
-  max-width: 800px;
+      .cd-horizontal-timeline .events-wrapper::after, .cd-horizontal-timeline .events-wrapper::before {
 
-  margin: 0 auto;
+        /* these are used to create a shadow effect at the sides of the timeline */
 
-}
+        content: '';
 
-.cd-horizontal-timeline .events-wrapper {
+        position: absolute;
 
-  position: relative;
+        z-index: 2;
 
-  height: 100%;
+        top: 0;
 
-  margin: 0 40px;
+        height: 100%;
 
-  overflow: hidden;
+        width: 20px;
 
-}
+      }
 
-.cd-horizontal-timeline .events-wrapper::after, .cd-horizontal-timeline .events-wrapper::before {
+      .cd-horizontal-timeline .events-wrapper::before {
 
-  /* these are used to create a shadow effect at the sides of the timeline */
+        left: 0;
 
-  content: '';
+        
 
-  position: absolute;
+      }
 
-  z-index: 2;
+      .cd-horizontal-timeline .events-wrapper::after {
 
-  top: 0;
+        right: 0;
 
-  height: 100%;
+        
 
-  width: 20px;
+      }
 
-}
+      .cd-horizontal-timeline .events {
 
-.cd-horizontal-timeline .events-wrapper::before {
+        /* this is the grey line/timeline */
 
-  left: 0;
+        position: absolute;
 
-  
+        z-index: 1;
 
-}
+        left: 0;
 
-.cd-horizontal-timeline .events-wrapper::after {
+        top: 50px;
 
-  right: 0;
+        height: 2px;
 
-  
+        /* width will be set using JavaScript */
 
-}
+        background: #dfdfdf;
 
-.cd-horizontal-timeline .events {
+        -webkit-transition: -webkit-transform 0.4s;
 
-  /* this is the grey line/timeline */
+        -moz-transition: -moz-transform 0.4s;
 
-  position: absolute;
+        transition: transform 0.4s;
 
-  z-index: 1;
+      }
 
-  left: 0;
+      .cd-horizontal-timeline .filling-line {
 
-  top: 50px;
+        /* this is used to create the green line filling the timeline */
 
-  height: 2px;
+        position: absolute;
 
-  /* width will be set using JavaScript */
+        z-index: 1;
 
-  background: #dfdfdf;
+        left: 0;
 
-  -webkit-transition: -webkit-transform 0.4s;
+        top: 0;
 
-  -moz-transition: -moz-transform 0.4s;
+        height: 100%;
 
-  transition: transform 0.4s;
+        width: 100%;
 
-}
+        background-color: #313740;
 
-.cd-horizontal-timeline .filling-line {
+        -webkit-transform: scaleX(0);
 
-  /* this is used to create the green line filling the timeline */
+        -moz-transform: scaleX(0);
 
-  position: absolute;
+        -ms-transform: scaleX(0);
 
-  z-index: 1;
+        -o-transform: scaleX(0);
 
-  left: 0;
+        transform: scaleX(0);
 
-  top: 0;
+        -webkit-transform-origin: left center;
 
-  height: 100%;
+        -moz-transform-origin: left center;
 
-  width: 100%;
+        -ms-transform-origin: left center;
 
-  background-color: #313740;
+        -o-transform-origin: left center;
 
-  -webkit-transform: scaleX(0);
+        transform-origin: left center;
 
-  -moz-transform: scaleX(0);
+        -webkit-transition: -webkit-transform 0.3s;
 
-  -ms-transform: scaleX(0);
+        -moz-transition: -moz-transform 0.3s;
 
-  -o-transform: scaleX(0);
+        transition: transform 0.3s;
 
-  transform: scaleX(0);
+      }
 
-  -webkit-transform-origin: left center;
+      .cd-horizontal-timeline .events a {
 
-  -moz-transform-origin: left center;
+        position: absolute;
 
-  -ms-transform-origin: left center;
+        bottom: 0;
 
-  -o-transform-origin: left center;
+        z-index: 2;
 
-  transform-origin: left center;
+        text-align: center;
 
-  -webkit-transition: -webkit-transform 0.3s;
+        font-size: 1rem;
 
-  -moz-transition: -moz-transform 0.3s;
+        padding-bottom: 15px;
 
-  transition: transform 0.3s;
+      
 
-}
+        /* fix bug on Safari - text flickering while timeline translates */
 
-.cd-horizontal-timeline .events a {
+        -webkit-transform: translateZ(0);
 
-  position: absolute;
+        -moz-transform: translateZ(0);
 
-  bottom: 0;
+        -ms-transform: translateZ(0);
 
-  z-index: 2;
+        -o-transform: translateZ(0);
 
-  text-align: center;
+        transform: translateZ(0);
 
-  font-size: 1rem;
+      }
 
-  padding-bottom: 15px;
+      .cd-horizontal-timeline .events a::after {
 
- 
+        /* this is used to create the event spot */
 
-  /* fix bug on Safari - text flickering while timeline translates */
+        content: '';
 
-  -webkit-transform: translateZ(0);
+        position: absolute;
 
-  -moz-transform: translateZ(0);
+        left: 50%;
 
-  -ms-transform: translateZ(0);
+        right: auto;
 
-  -o-transform: translateZ(0);
+        -webkit-transform: translateX(-50%);
 
-  transform: translateZ(0);
+        -moz-transform: translateX(-50%);
 
-}
+        -ms-transform: translateX(-50%);
 
-.cd-horizontal-timeline .events a::after {
+        -o-transform: translateX(-50%);
 
-  /* this is used to create the event spot */
+        transform: translateX(-50%);
 
-  content: '';
+        bottom: -5px;
 
-  position: absolute;
+        height: 12px;
 
-  left: 50%;
+        width: 12px;
 
-  right: auto;
+        border-radius: 50%;
 
-  -webkit-transform: translateX(-50%);
+        border: 2px solid #dfdfdf;
 
-  -moz-transform: translateX(-50%);
+        background-color: #f8f8f8;
 
-  -ms-transform: translateX(-50%);
+        -webkit-transition: background-color 0.3s, border-color 0.3s;
 
-  -o-transform: translateX(-50%);
+        -moz-transition: background-color 0.3s, border-color 0.3s;
 
-  transform: translateX(-50%);
+        transition: background-color 0.3s, border-color 0.3s;
 
-  bottom: -5px;
+      }
 
-  height: 12px;
+      .no-touch .cd-horizontal-timeline .events a:hover::after {
 
-  width: 12px;
+        background-color: #313740;
 
-  border-radius: 50%;
+        border-color: #313740;
 
-  border: 2px solid #dfdfdf;
+      }
 
-  background-color: #f8f8f8;
+      .cd-horizontal-timeline .events a.selected {
 
-  -webkit-transition: background-color 0.3s, border-color 0.3s;
+        pointer-events: none;
 
-  -moz-transition: background-color 0.3s, border-color 0.3s;
+      }
 
-  transition: background-color 0.3s, border-color 0.3s;
+      .cd-horizontal-timeline .events a.selected::after {
 
-}
+        background-color: #313740;
 
-.no-touch .cd-horizontal-timeline .events a:hover::after {
+        border-color: #313740;
 
-  background-color: #313740;
+      }
 
-  border-color: #313740;
+      .cd-horizontal-timeline .events a.older-event::after {
 
-}
+        border-color: #313740;
 
-.cd-horizontal-timeline .events a.selected {
+      }
 
-  pointer-events: none;
+      @media only screen and (min-width: 1100px) {
 
-}
+        .cd-horizontal-timeline::before {
 
-.cd-horizontal-timeline .events a.selected::after {
+          /* never visible - this is used in jQuery to check the current MQ */
 
-  background-color: #313740;
+          content: 'desktop';
 
-  border-color: #313740;
+        }
 
-}
+      }
 
-.cd-horizontal-timeline .events a.older-event::after {
 
-  border-color: #313740;
 
-}
+      .cd-timeline-navigation a {
 
-@media only screen and (min-width: 1100px) {
+        /* these are the left/right arrows to navigate the timeline */
 
-  .cd-horizontal-timeline::before {
+        position: absolute;
 
-    /* never visible - this is used in jQuery to check the current MQ */
+        z-index: 1;
 
-    content: 'desktop';
+        top: 50%;
 
-  }
+        bottom: auto;
 
-}
+        -webkit-transform: translateY(-50%);
 
+        -moz-transform: translateY(-50%);
 
+        -ms-transform: translateY(-50%);
 
-.cd-timeline-navigation a {
+        -o-transform: translateY(-50%);
 
-  /* these are the left/right arrows to navigate the timeline */
+        transform: translateY(-50%);
 
-  position: absolute;
+        height: 34px;
 
-  z-index: 1;
+        width: 34px;
 
-  top: 50%;
+        border-radius: 50%;
 
-  bottom: auto;
+        border: 2px solid #dfdfdf;
 
-  -webkit-transform: translateY(-50%);
+        /* replace text with an icon */
 
-  -moz-transform: translateY(-50%);
+        overflow: hidden;
 
-  -ms-transform: translateY(-50%);
+        color: transparent;
 
-  -o-transform: translateY(-50%);
+        text-indent: 100%;
 
-  transform: translateY(-50%);
+        white-space: nowrap;
 
-  height: 34px;
+        -webkit-transition: border-color 0.3s;
 
-  width: 34px;
+        -moz-transition: border-color 0.3s;
 
-  border-radius: 50%;
+        transition: border-color 0.3s;
 
-  border: 2px solid #dfdfdf;
+      }
 
-  /* replace text with an icon */
+      .cd-timeline-navigation a::after {
 
-  overflow: hidden;
+        /* arrow icon */
 
-  color: transparent;
+        content: '';
 
-  text-indent: 100%;
+        position: absolute;
 
-  white-space: nowrap;
+        height: 16px;
 
-  -webkit-transition: border-color 0.3s;
+        width: 16px;
 
-  -moz-transition: border-color 0.3s;
+        left: 50%;
 
-  transition: border-color 0.3s;
+        top: 50%;
 
-}
+        bottom: auto;
 
-.cd-timeline-navigation a::after {
+        right: auto;
 
-  /* arrow icon */
+        -webkit-transform: translateX(-50%) translateY(-50%);
 
-  content: '';
+        -moz-transform: translateX(-50%) translateY(-50%);
 
-  position: absolute;
+        -ms-transform: translateX(-50%) translateY(-50%);
 
-  height: 16px;
+        -o-transform: translateX(-50%) translateY(-50%);
 
-  width: 16px;
+        transform: translateX(-50%) translateY(-50%);
 
-  left: 50%;
+        background: url(../img/cd-arrow.svg) no-repeat 0 0;
 
-  top: 50%;
+      }
 
-  bottom: auto;
+      .cd-timeline-navigation a.prev {
 
-  right: auto;
+        left: 0;
 
-  -webkit-transform: translateX(-50%) translateY(-50%);
+        -webkit-transform: translateY(-50%) rotate(180deg);
 
-  -moz-transform: translateX(-50%) translateY(-50%);
+        -moz-transform: translateY(-50%) rotate(180deg);
 
-  -ms-transform: translateX(-50%) translateY(-50%);
+        -ms-transform: translateY(-50%) rotate(180deg);
 
-  -o-transform: translateX(-50%) translateY(-50%);
+        -o-transform: translateY(-50%) rotate(180deg);
 
-  transform: translateX(-50%) translateY(-50%);
+        transform: translateY(-50%) rotate(180deg);
 
-  background: url(../img/cd-arrow.svg) no-repeat 0 0;
+      }
 
-}
+      .cd-timeline-navigation a.next {
 
-.cd-timeline-navigation a.prev {
+        right: 0;
 
-  left: 0;
+      }
 
-  -webkit-transform: translateY(-50%) rotate(180deg);
+      .no-touch .cd-timeline-navigation a:hover {
 
-  -moz-transform: translateY(-50%) rotate(180deg);
+        border-color: #7b9d6f;
 
-  -ms-transform: translateY(-50%) rotate(180deg);
+      }
 
-  -o-transform: translateY(-50%) rotate(180deg);
+      .cd-timeline-navigation a.inactive {
 
-  transform: translateY(-50%) rotate(180deg);
+        cursor: not-allowed;
 
-}
+      }
 
-.cd-timeline-navigation a.next {
+      .cd-timeline-navigation a.inactive::after {
 
-  right: 0;
+        background-position: 0 -16px;
 
-}
+      }
 
-.no-touch .cd-timeline-navigation a:hover {
+      .no-touch .cd-timeline-navigation a.inactive:hover {
 
-  border-color: #7b9d6f;
+        border-color: #dfdfdf;
 
-}
+      }
 
-.cd-timeline-navigation a.inactive {
 
-  cursor: not-allowed;
 
-}
+      .cd-horizontal-timeline .events-content {
 
-.cd-timeline-navigation a.inactive::after {
+        position: relative;
 
-  background-position: 0 -16px;
+        width: 100%;
 
-}
+        margin: 2em 0;
 
-.no-touch .cd-timeline-navigation a.inactive:hover {
+        overflow: hidden;
 
-  border-color: #dfdfdf;
+        -webkit-transition: height 0.4s;
 
-}
+        -moz-transition: height 0.4s;
 
+        transition: height 0.4s;
 
+      }
 
-.cd-horizontal-timeline .events-content {
+      .cd-horizontal-timeline .events-content li {
 
-  position: relative;
+        position: absolute;
 
-  width: 100%;
+        z-index: 1;
 
-  margin: 2em 0;
+        width: 100%;
 
-  overflow: hidden;
+        left: 0;
 
-  -webkit-transition: height 0.4s;
+        top: 0;
 
-  -moz-transition: height 0.4s;
+        -webkit-transform: translateX(-100%);
 
-  transition: height 0.4s;
+        -moz-transform: translateX(-100%);
 
-}
+        -ms-transform: translateX(-100%);
 
-.cd-horizontal-timeline .events-content li {
+        -o-transform: translateX(-100%);
 
-  position: absolute;
+        transform: translateX(-100%);
 
-  z-index: 1;
+        padding: 0 5%;
 
-  width: 100%;
+        opacity: 0;
 
-  left: 0;
+        -webkit-animation-duration: 0.4s;
 
-  top: 0;
+        -moz-animation-duration: 0.4s;
 
-  -webkit-transform: translateX(-100%);
+        animation-duration: 0.4s;
 
-  -moz-transform: translateX(-100%);
+        -webkit-animation-timing-function: ease-in-out;
 
-  -ms-transform: translateX(-100%);
+        -moz-animation-timing-function: ease-in-out;
 
-  -o-transform: translateX(-100%);
+        animation-timing-function: ease-in-out;
 
-  transform: translateX(-100%);
+      }
 
-  padding: 0 5%;
+      .cd-horizontal-timeline .events-content li.selected {
 
-  opacity: 0;
+        /* visible event content */
 
-  -webkit-animation-duration: 0.4s;
+        position: relative;
 
-  -moz-animation-duration: 0.4s;
+        z-index: 2;
 
-  animation-duration: 0.4s;
+        opacity: 1;
 
-  -webkit-animation-timing-function: ease-in-out;
+        -webkit-transform: translateX(0);
 
-  -moz-animation-timing-function: ease-in-out;
+        -moz-transform: translateX(0);
 
-  animation-timing-function: ease-in-out;
+        -ms-transform: translateX(0);
 
-}
+        -o-transform: translateX(0);
 
-.cd-horizontal-timeline .events-content li.selected {
+        transform: translateX(0);
 
-  /* visible event content */
+      }
 
-  position: relative;
+      .cd-horizontal-timeline .events-content li.enter-right, .cd-horizontal-timeline .events-content li.leave-right {
 
-  z-index: 2;
+        -webkit-animation-name: cd-enter-right;
 
-  opacity: 1;
+        -moz-animation-name: cd-enter-right;
 
-  -webkit-transform: translateX(0);
+        animation-name: cd-enter-right;
 
-  -moz-transform: translateX(0);
+      }
 
-  -ms-transform: translateX(0);
+      .cd-horizontal-timeline .events-content li.enter-left, .cd-horizontal-timeline .events-content li.leave-left {
 
-  -o-transform: translateX(0);
+        -webkit-animation-name: cd-enter-left;
 
-  transform: translateX(0);
+        -moz-animation-name: cd-enter-left;
 
-}
+        animation-name: cd-enter-left;
 
-.cd-horizontal-timeline .events-content li.enter-right, .cd-horizontal-timeline .events-content li.leave-right {
+      }
 
-  -webkit-animation-name: cd-enter-right;
+      .cd-horizontal-timeline .events-content li.leave-right, .cd-horizontal-timeline .events-content li.leave-left {
 
-  -moz-animation-name: cd-enter-right;
+        -webkit-animation-direction: reverse;
 
-  animation-name: cd-enter-right;
+        -moz-animation-direction: reverse;
 
-}
+        animation-direction: reverse;
 
-.cd-horizontal-timeline .events-content li.enter-left, .cd-horizontal-timeline .events-content li.leave-left {
+      }
 
-  -webkit-animation-name: cd-enter-left;
+      .cd-horizontal-timeline .events-content li > * {
 
-  -moz-animation-name: cd-enter-left;
+        max-width: 800px;
 
-  animation-name: cd-enter-left;
+        margin: 0 auto;
 
-}
+      }
 
-.cd-horizontal-timeline .events-content li.leave-right, .cd-horizontal-timeline .events-content li.leave-left {
+      .cd-horizontal-timeline .events-content h4 {
 
-  -webkit-animation-direction: reverse;
+        font-weight: 700;
 
-  -moz-animation-direction: reverse;
+        margin-bottom: 0px;
 
-  animation-direction: reverse;
+        line-height: 20px;
 
-}
+        margin-bottom: 15px;
 
-.cd-horizontal-timeline .events-content li > * {
+      }
 
-  max-width: 800px;
+      .cd-horizontal-timeline .events-content h4 small {
 
-  margin: 0 auto;
+        font-weight: 400;
+        line-height: normal;
+        font-size: 15px;
+      }
 
-}
+      .cd-horizontal-timeline .events-content em {
+        display: block;
+        font-style: italic;
+        margin: 10px auto;
+      }
 
-.cd-horizontal-timeline .events-content h4 {
+      .cd-horizontal-timeline .events-content em::before {
+        content: '- ';
+      }
 
-  font-weight: 700;
+      .cd-horizontal-timeline .events-content p {
+        font-size: 16px;
+        margin-top: 15px;
+      }
 
-  margin-bottom: 0px;
+      @media only screen and (min-width: 768px) {
 
-  line-height: 20px;
+        .cd-horizontal-timeline .events-content em {
+          font-size: 1rem;
+        }  
+      }
 
-  margin-bottom: 15px;
+      @media only screen and (max-width: 767px) {
+        .cd-horizontal-timeline.loaded{ margin: 0;}  
+        .cd-horizontal-timeline .timeline{ width: 100%;}
+        .cd-horizontal-timeline ol, .cd-horizontal-timeline ul{padding: 0;margin: 0;}
+        .cd-horizontal-timeline .events-content h4{ font-size: 16px;}
+        .cd-horizontal-timeline .events-content{ margin: 0;}  
+      }
 
-}
+      @-webkit-keyframes cd-enter-right {
 
-.cd-horizontal-timeline .events-content h4 small {
+        0% {
+          opacity: 0;
+          -webkit-transform: translateX(100%);
+        }
 
-  font-weight: 400;
+        100% {
+          opacity: 1;
+          -webkit-transform: translateX(0%);
+        }
+      }
 
-  line-height: normal;
+      @-moz-keyframes cd-enter-right {
 
-  font-size: 15px;
+        0% {
+          opacity: 0;
+          -moz-transform: translateX(100%);
+        }
 
-}
+        100% {
+          opacity: 1;
+          -moz-transform: translateX(0%);
+        }
+      }
 
-.cd-horizontal-timeline .events-content em {
+      @keyframes cd-enter-right {
 
-  display: block;
+        0% {
+          opacity: 0;
+          -webkit-transform: translateX(100%);
+          -moz-transform: translateX(100%);
+          -ms-transform: translateX(100%);
+          -o-transform: translateX(100%);
+          transform: translateX(100%);
+        }
 
-  font-style: italic;
+        100% {
+          opacity: 1;
+          -webkit-transform: translateX(0%);
+          -moz-transform: translateX(0%);
+          -ms-transform: translateX(0%);
+          -o-transform: translateX(0%);
+          transform: translateX(0%);
+        }
+      }
 
-  margin: 10px auto;
+      @-webkit-keyframes cd-enter-left {
 
-}
+        0% {
+          opacity: 0;
+          -webkit-transform: translateX(-100%);
+        }
 
-.cd-horizontal-timeline .events-content em::before {
+        100% {
+          opacity: 1;
+          -webkit-transform: translateX(0%);
+        }
+      }
 
-  content: '- ';
+      @-moz-keyframes cd-enter-left {
 
-}
+        0% {
+          opacity: 0;
+          -moz-transform: translateX(-100%);
+        }
 
-.cd-horizontal-timeline .events-content p {
+        100% {
+          opacity: 1;
+          -moz-transform: translateX(0%);
+        }
+      }
 
-  font-size: 16px;
+      @keyframes cd-enter-left {
 
-  margin-top: 15px;
+        0% {
+          opacity: 0;
+          -webkit-transform: translateX(-100%);
+          -moz-transform: translateX(-100%);
+          -ms-transform: translateX(-100%);
+          -o-transform: translateX(-100%);
+          transform: translateX(-100%);
+        }
 
-  
+        100% {
+          opacity: 1;
+          -webkit-transform: translateX(0%);
+          -moz-transform: translateX(0%);
+          -ms-transform: translateX(0%);
+          -o-transform: translateX(0%);
+          transform: translateX(0%);
+        }
+      }
 
-}
+      .timeline:before{
+        content: " ";
+        display:none;
+        bottom: 0;
+        left: 0%;
+        width: 0px;
+        margin-left: -1.5px;
+        background-color: #eeeeee;
+      }
 
+    </style> 
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 
-@media only screen and (min-width: 768px) {
-
-  
-
-  .cd-horizontal-timeline .events-content em {
-
-    font-size: 1rem;
-
-  }  
-
-}
-
-
-
-@media only screen and (max-width: 767px) {
-
-
-
-  .cd-horizontal-timeline.loaded{ margin: 0;}  
-
-  .cd-horizontal-timeline .timeline{ width: 100%;}
-
-  .cd-horizontal-timeline ol, .cd-horizontal-timeline ul{padding: 0;margin: 0;}
-
-  .cd-horizontal-timeline .events-content h4{ font-size: 16px;}
-
-  .cd-horizontal-timeline .events-content{ margin: 0;}
-
-  
-
-}
-
-
-
-@-webkit-keyframes cd-enter-right {
-
-  0% {
-
-    opacity: 0;
-
-    -webkit-transform: translateX(100%);
-
-  }
-
-  100% {
-
-    opacity: 1;
-
-    -webkit-transform: translateX(0%);
-
-  }
-
-}
-
-@-moz-keyframes cd-enter-right {
-
-  0% {
-
-    opacity: 0;
-
-    -moz-transform: translateX(100%);
-
-  }
-
-  100% {
-
-    opacity: 1;
-
-    -moz-transform: translateX(0%);
-
-  }
-
-}
-
-@keyframes cd-enter-right {
-
-  0% {
-
-    opacity: 0;
-
-    -webkit-transform: translateX(100%);
-
-    -moz-transform: translateX(100%);
-
-    -ms-transform: translateX(100%);
-
-    -o-transform: translateX(100%);
-
-    transform: translateX(100%);
-
-  }
-
-  100% {
-
-    opacity: 1;
-
-    -webkit-transform: translateX(0%);
-
-    -moz-transform: translateX(0%);
-
-    -ms-transform: translateX(0%);
-
-    -o-transform: translateX(0%);
-
-    transform: translateX(0%);
-
-  }
-
-}
-
-@-webkit-keyframes cd-enter-left {
-
-  0% {
-
-    opacity: 0;
-
-    -webkit-transform: translateX(-100%);
-
-  }
-
-  100% {
-
-    opacity: 1;
-
-    -webkit-transform: translateX(0%);
-
-  }
-
-}
-
-@-moz-keyframes cd-enter-left {
-
-  0% {
-
-    opacity: 0;
-
-    -moz-transform: translateX(-100%);
-
-  }
-
-  100% {
-
-    opacity: 1;
-
-    -moz-transform: translateX(0%);
-
-  }
-
-}
-
-@keyframes cd-enter-left {
-
-  0% {
-
-    opacity: 0;
-
-    -webkit-transform: translateX(-100%);
-
-    -moz-transform: translateX(-100%);
-
-    -ms-transform: translateX(-100%);
-
-    -o-transform: translateX(-100%);
-
-    transform: translateX(-100%);
-
-  }
-
-  100% {
-
-    opacity: 1;
-
-    -webkit-transform: translateX(0%);
-
-    -moz-transform: translateX(0%);
-
-    -ms-transform: translateX(0%);
-
-    -o-transform: translateX(0%);
-
-    transform: translateX(0%);
-
-  }
-
-}
-
-.timeline:before{
-
-  content: " ";
-
-    display:none;
-
-    bottom: 0;
-
-    left: 0%;
-
-    width: 0px;
-
-    margin-left: -1.5px;
-
-    background-color: #eeeeee;
-
-}
-  </style> 
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <!--     Fonts and icons     -->
-  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
-  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
-  <!-- Nucleo Icons -->
-  <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
-  <!-- CSS Files -->
-  <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="../assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <!-- Nucleo Icons -->
+    <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
+    <!-- CSS Files -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
   </head>
   <body class=" ">
   <div class="wrapper ">
@@ -1078,7 +932,9 @@
                 <h3 class="card-title"><i class="tim-icons icon-delivery-fast text-info "></i> Age</h3>
               </div>
               <div class="card-body ">
-                <svg class="chart"></svg>
+                <div class="chart-area">
+                  <canvas id="CountryChart"></canvas>
+                </div>
               </div>
             </div>
           </div>
@@ -1259,16 +1115,15 @@
                           <p>Fusce ullamcorper ligula sit amet quam stuff stuff stuff some more stuff and some more so here you go! </p>
                         </li>
                       </ul>
-
                     </div>
-
                   </div>
-
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
     <div class="col-12">
       <div class="card card-chart">
         <div class="card-header ">
@@ -1312,13 +1167,11 @@
 
 
 
-	(timelines.length > 0) && initTimeline(timelines);
+	  (timelines.length > 0) && initTimeline(timelines);
 
+    function initTimeline(timelines) {
 
-
-	function initTimeline(timelines) {
-
-		timelines.each(function(){
+      timelines.each(function(){
 
 			var timeline = $(this),
 
@@ -1355,8 +1208,6 @@
 			//the timeline has been initialize - show it
 
 			timeline.addClass('loaded');
-
-
 
 			//detect click on the next arrow
 
@@ -1395,8 +1246,6 @@
 				updateVisibleContent($(this), timelineComponents['eventsContent']);
 
 			});
-
-
 
 			//on swipe, show next/prev event content
 
@@ -1438,8 +1287,6 @@
 
 	}
 
-
-
 	function updateSlide(timelineComponents, timelineTotWidth, string) {
 
 		//retrieve translateX value of timelineComponents['eventsWrapper']
@@ -1457,8 +1304,6 @@
 			: translateTimeline(timelineComponents, translateValue + wrapperWidth - eventsMinDistance);
 
 	}
-
-
 
 	function showNewContent(timelineComponents, timelineTotWidth, string) {
 
@@ -1494,8 +1339,6 @@
 
 	}
 
-
-
 	function updateTimelinePosition(string, event, timelineComponents) {
 
 		//translate timeline to the left/right according to the position of the selected event
@@ -1517,7 +1360,6 @@
         	translateTimeline(timelineComponents, - eventLeft + timelineWidth/2, timelineWidth - timelineTotWidth);
 
         }
-
 	}
 
 
@@ -1708,8 +1550,6 @@
 
 	}
 
-
-
 	//based on http://stackoverflow.com/questions/542938/how-do-i-get-the-number-of-days-between-two-dates-in-javascript
 
 	function parseDate(events) {
@@ -1752,15 +1592,11 @@
 
 	}
 
-
-
 	function daydiff(first, second) {
 
 	    return Math.round((second-first));
 
 	}
-
-
 
 	function minLapse(dates) {
 
@@ -1779,8 +1615,6 @@
 		return Math.min.apply(null, dateDistances);
 
 	}
-
-
 
 	/*
 
@@ -1953,139 +1787,6 @@
 
       });
     </script>
-    <script>
-      var data = {
-  labels: [
-    'A', 'B', 'C'
-  ],
-  series: [
-    {
-      label: 'HTC',
-      values: [14, 8, 15]
-    },
-    {
-      label: 'Registry',
-      values: [12, 43, 22]
-    }]
-};
-
-var chartWidth       = 300,
-    barHeight        = 40,
-    groupHeight      = barHeight * data.series.length,
-    gapBetweenGroups = 10,
-    spaceForLabels   = 150,
-    spaceForLegend   = 150;
-
-// Zip the series data together (first values, second values, etc.)
-var zippedData = [];
-for (var i=0; i<data.labels.length; i++) {
-  for (var j=0; j<data.series.length; j++) {
-    zippedData.push(data.series[j].values[i]);
-  }
-}
-
-console.log(zippedData);
-// Color scale
-var color = d3.scaleOrdinal()
-            .range(["#16A085", "#33435C"]);
-var chartHeight = barHeight * zippedData.length + gapBetweenGroups * data.labels.length;
-
-var x = d3.scaleLinear()
-    .domain([0, d3.max(zippedData)])
-    .range([0, chartWidth]);
-
-var y = d3.scaleLinear()
-    .range([chartHeight + gapBetweenGroups, 0]);
-
-var yAxis = d3.axisLeft()
-    .scale(y)
-    .tickFormat('')
-    .tickSize(0);
-    
-var xAxis = d3.axisBottom(x).tickFormat(function(d){ 
-return d;
-});
-
-// Specify the chart area and dimensions
-var chart = d3.select(".chart")
-    .attr("width", spaceForLabels + chartWidth + spaceForLegend)
-    .attr("height", chartHeight +30);
-    
-   // console.log(chartHeight);
-
-// Create bars
-var bar = chart.selectAll("g")
-    .data(zippedData)
-    .enter().append("g")
-    .attr("transform", function(d, i) {
-      return "translate(" + spaceForLabels + "," + (i * barHeight + gapBetweenGroups * (0.5 + Math.floor(i/data.series.length))) + ")";
-    });
-
-// Create rectangles of the correct width
-bar.append("rect")
-    .attr("fill", function(d,i) { return color(i % data.series.length); })
-    .attr("class", "bar")
-    .attr("width", x)
-    .attr("height", barHeight - 1);
-
-/* // Add text label in bar
-bar.append("text")
-    .attr("x", function(d) { return x(d) - 3; })
-    .attr("y", barHeight / 2)
-    .attr("fill", "red")
-    .attr("dy", ".35em")
-    .text(function(d) { return d; }); */
-
-// Draw labels
-bar.append("text")
-    .attr("class", "label")
-    .attr("x", function(d) { return - 10; })
-    .attr("y", groupHeight / 2)
-    .attr("dy", ".35em")
-    .text(function(d,i) {
-      if (i % data.series.length === 0)
-        return data.labels[Math.floor(i/data.series.length)];
-      else
-        return ""});
-
-chart.append("g")
-      .attr("class", "y axis")
-      .attr("transform", "translate(" + spaceForLabels + ", " + -gapBetweenGroups/2 + ")")
-      .call(yAxis);
-      
- chart.append("g")         // Add the X Axis
-        .attr("class", "x axis")
-        .attr("transform", "translate(" + spaceForLabels + "," + chartHeight + ")")
-        .call(xAxis);
-
-// Draw legend
-var legendRectSize = 18,
-    legendSpacing  = 4;
-
-var legend = chart.selectAll('.legend')
-    .data(data.series)
-    .enter()
-    .append('g')
-    .attr('transform', function (d, i) {
-        var height = legendRectSize + legendSpacing;
-        var offset = -gapBetweenGroups/2;
-        var horz = spaceForLabels + chartWidth + 40 - legendRectSize;
-        var vert = i * height - offset;
-        return 'translate(' + horz + ',' + vert + ')';
-    });
-
-legend.append('rect')
-    .attr('width', legendRectSize)
-    .attr('height', legendRectSize)
-    .style('fill', function (d, i) { return color(i); })
-    .style('stroke', function (d, i) { return color(i); });
-
-legend.append('text')
-    .attr('class', 'legend')
-    .attr('x', legendRectSize + legendSpacing)
-    .attr('y', legendRectSize - legendSpacing)
-    .text(function (d) { return d.label; });
-  </script>
   </body>
 </html>
 
