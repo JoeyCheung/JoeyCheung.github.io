@@ -4791,7 +4791,7 @@ table.tablesorter thead tr .headerSortDown {
 }
 
 .card-chart {
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
 .card-chart .card-header .card-title {
@@ -4801,7 +4801,6 @@ table.tablesorter thead tr .headerSortDown {
 .card-chart .card-header .card-title i {
   font-size: 16px;
   margin-right: 5px;
-  margin-bottom: 3px;
 }
 
 .card-chart .card-header .card-category {
