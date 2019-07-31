@@ -1,1908 +1,435 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <title>
-    Hackathon
-  </title>
-  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-  <style>
-    ul.timeline {
-
-      list-style-type: none;
-
-      position: relative;
-
-    }
-
-    ul.timeline:before {
-
-      content: ' ';
-
-      background: #d4d9df;
-
-      display: inline-block;
-
-      position: absolute;
-
-      left: 29px;
-
-      width: 2px;
-
-      height: 100%;
-
-      z-index: 400;
-
-    }
-
-    ul.timeline > li {
-
-      margin: 20px 0;
-
-      padding-left: 20px;
-
-    }
-
-    ul.timeline > li:before {
-
-      content: ' ';
-
-      background: white;
-
-      display: inline-block;
-
-      position: absolute;
-
-      border-radius: 50%;
-
-      border: 3px solid #22c0e8;
-
-      left: 20px;
-
-      width: 20px;
-
-      height: 20px;
-
-      z-index: 400;
-
-    }
-    body{
-
-    margin-top:20px;
-
-    background:#eee;
-
-}
-
-
-
-
-
-
-
-.cd-horizontal-timeline ol, .cd-horizontal-timeline ul {
-
-  list-style: none;
-
-}
-
-.cd-timeline-navigation a:hover, .cd-timeline-navigation a:focus {
-
-   border-color:#313740;
-
-  
-
-}
-
-.cd-horizontal-timeline a, .cd-horizontal-timeline a:hover, .cd-horizontal-timeline a:focus{ color:#313740;}
-
-.cd-horizontal-timeline blockquote, .cd-horizontal-timeline q {
-
-  quotes: none;
-
-}
-
-.cd-horizontal-timeline blockquote:before, .cd-horizontal-timeline blockquote:after,
-
-.cd-horizontal-timeline q:before, .cd-horizontal-timeline q:after {
-
-  content: '';
-
-  content: none;
-
-}
-
-.cd-horizontal-timeline table {
-
-  border-collapse: collapse;
-
-  border-spacing: 0;
-
-}
-
-.cd-horizontal-timeline {
-
-  opacity: 0;
-
-  margin: 2em auto;
-
-  -webkit-transition: opacity 0.2s;
-
-  -moz-transition: opacity 0.2s;
-
-  transition: opacity 0.2s;
-
-}
-
-.cd-horizontal-timeline::before {
-
-  /* never visible - this is used in jQuery to check the current MQ */
-
-  content: 'mobile';
-
-  display: none;
-
-}
-
-.cd-horizontal-timeline.loaded {
-
-  /* show the timeline after events position has been set (using JavaScript) */
-
-  opacity: 1;
-
-}
-
-.cd-horizontal-timeline .timeline {
-
-  position: relative;
-
-  height: 100px;
-
-  width: 90%;
-
-  max-width: 1400px;
-
-  margin: 0 auto;
-
-}
-
-.cd-horizontal-timeline .events-wrapper {
-
-  position: relative;
-
-  height: 100%;
-
-  margin: 0 40px;
-
-  overflow: hidden;
-
-}
-
-.cd-horizontal-timeline .events-wrapper::after, .cd-horizontal-timeline .events-wrapper::before {
-
-  /* these are used to create a shadow effect at the sides of the timeline */
-
-  content: '';
-
-  position: absolute;
-
-  z-index: 2;
-
-  top: 0;
-
-  height: 100%;
-
-  width: 20px;
-
-}
-
-.cd-horizontal-timeline .events-wrapper::before {
-
-  left: 0;
-
-  
-
-}
-
-.cd-horizontal-timeline .events-wrapper::after {
-
-  right: 0;
-
-  
-
-}
-
-.cd-horizontal-timeline .events {
-
-  /* this is the grey line/timeline */
-
-  position: absolute;
-
-  z-index: 1;
-
-  left: 0;
-
-  top: 50px;
-
-  height: 2px;
-
-  /* width will be set using JavaScript */
-
-  background: #dfdfdf;
-
-  -webkit-transition: -webkit-transform 0.4s;
-
-  -moz-transition: -moz-transform 0.4s;
-
-  transition: transform 0.4s;
-
-}
-
-.cd-horizontal-timeline .filling-line {
-
-  /* this is used to create the green line filling the timeline */
-
-  position: absolute;
-
-  z-index: 1;
-
-  left: 0;
-
-  top: 0;
-
-  height: 100%;
-
-  width: 100%;
-
-  background-color: #313740;
-
-  -webkit-transform: scaleX(0);
-
-  -moz-transform: scaleX(0);
-
-  -ms-transform: scaleX(0);
-
-  -o-transform: scaleX(0);
-
-  transform: scaleX(0);
-
-  -webkit-transform-origin: left center;
-
-  -moz-transform-origin: left center;
-
-  -ms-transform-origin: left center;
-
-  -o-transform-origin: left center;
-
-  transform-origin: left center;
-
-  -webkit-transition: -webkit-transform 0.3s;
-
-  -moz-transition: -moz-transform 0.3s;
-
-  transition: transform 0.3s;
-
-}
-
-.cd-horizontal-timeline .events a {
-
-  position: absolute;
-
-  bottom: 0;
-
-  z-index: 2;
-
-  text-align: center;
-
-  font-size: 1rem;
-
-  padding-bottom: 15px;
-
- 
-
-  /* fix bug on Safari - text flickering while timeline translates */
-
-  -webkit-transform: translateZ(0);
-
-  -moz-transform: translateZ(0);
-
-  -ms-transform: translateZ(0);
-
-  -o-transform: translateZ(0);
-
-  transform: translateZ(0);
-
-}
-
-.cd-horizontal-timeline .events a::after {
-
-  /* this is used to create the event spot */
-
-  content: '';
-
-  position: absolute;
-
-  left: 50%;
-
-  right: auto;
-
-  -webkit-transform: translateX(-50%);
-
-  -moz-transform: translateX(-50%);
-
-  -ms-transform: translateX(-50%);
-
-  -o-transform: translateX(-50%);
-
-  transform: translateX(-50%);
-
-  bottom: -5px;
-
-  height: 12px;
-
-  width: 12px;
-
-  border-radius: 50%;
-
-  border: 2px solid #dfdfdf;
-
-  background-color: #f8f8f8;
-
-  -webkit-transition: background-color 0.3s, border-color 0.3s;
-
-  -moz-transition: background-color 0.3s, border-color 0.3s;
-
-  transition: background-color 0.3s, border-color 0.3s;
-
-}
-
-.no-touch .cd-horizontal-timeline .events a:hover::after {
-
-  background-color: #313740;
-
-  border-color: #313740;
-
-}
-
-.cd-horizontal-timeline .events a.selected {
-
-  pointer-events: none;
-
-}
-
-.cd-horizontal-timeline .events a.selected::after {
-
-  background-color: #313740;
-
-  border-color: #313740;
-
-}
-
-.cd-horizontal-timeline .events a.older-event::after {
-
-  border-color: #313740;
-
-}
-
-@media only screen and (min-width: 1100px) {
-
-  .cd-horizontal-timeline::before {
-
-    /* never visible - this is used in jQuery to check the current MQ */
-
-    content: 'desktop';
-
-  }
-
-}
-
-
-
-.cd-timeline-navigation a {
-
-  /* these are the left/right arrows to navigate the timeline */
-
-  position: absolute;
-
-  z-index: 1;
-
-  top: 50%;
-
-  bottom: auto;
-
-  -webkit-transform: translateY(-50%);
-
-  -moz-transform: translateY(-50%);
-
-  -ms-transform: translateY(-50%);
-
-  -o-transform: translateY(-50%);
-
-  transform: translateY(-50%);
-
-  height: 34px;
-
-  width: 34px;
-
-  border-radius: 50%;
-
-  border: 2px solid #dfdfdf;
-
-  /* replace text with an icon */
-
-  overflow: hidden;
-
-  color: transparent;
-
-  text-indent: 100%;
-
-  white-space: nowrap;
-
-  -webkit-transition: border-color 0.3s;
-
-  -moz-transition: border-color 0.3s;
-
-  transition: border-color 0.3s;
-
-}
-
-.cd-timeline-navigation a::after {
-
-  /* arrow icon */
-
-  content: '';
-
-  position: absolute;
-
-  height: 16px;
-
-  width: 16px;
-
-  left: 50%;
-
-  top: 50%;
-
-  bottom: auto;
-
-  right: auto;
-
-  -webkit-transform: translateX(-50%) translateY(-50%);
-
-  -moz-transform: translateX(-50%) translateY(-50%);
-
-  -ms-transform: translateX(-50%) translateY(-50%);
-
-  -o-transform: translateX(-50%) translateY(-50%);
-
-  transform: translateX(-50%) translateY(-50%);
-
-  background: url(../img/cd-arrow.svg) no-repeat 0 0;
-
-}
-
-.cd-timeline-navigation a.prev {
-
-  left: 0;
-
-  -webkit-transform: translateY(-50%) rotate(180deg);
-
-  -moz-transform: translateY(-50%) rotate(180deg);
-
-  -ms-transform: translateY(-50%) rotate(180deg);
-
-  -o-transform: translateY(-50%) rotate(180deg);
-
-  transform: translateY(-50%) rotate(180deg);
-
-}
-
-.cd-timeline-navigation a.next {
-
-  right: 0;
-
-}
-
-.no-touch .cd-timeline-navigation a:hover {
-
-  border-color: #7b9d6f;
-
-}
-
-.cd-timeline-navigation a.inactive {
-
-  cursor: not-allowed;
-
-}
-
-.cd-timeline-navigation a.inactive::after {
-
-  background-position: 0 -16px;
-
-}
-
-.no-touch .cd-timeline-navigation a.inactive:hover {
-
-  border-color: #dfdfdf;
-
-}
-
-
-
-.cd-horizontal-timeline .events-content {
-
-  position: relative;
-
-  width: 100%;
-
-  margin: 2em 0;
-
-  overflow: hidden;
-
-  -webkit-transition: height 0.4s;
-
-  -moz-transition: height 0.4s;
-
-  transition: height 0.4s;
-
-}
-
-.cd-horizontal-timeline .events-content li {
-
-  position: absolute;
-
-  z-index: 1;
-
-  width: 100%;
-
-  left: 0;
-
-  top: 0;
-
-  -webkit-transform: translateX(-100%);
-
-  -moz-transform: translateX(-100%);
-
-  -ms-transform: translateX(-100%);
-
-  -o-transform: translateX(-100%);
-
-  transform: translateX(-100%);
-
-  padding: 0 5%;
-
-  opacity: 0;
-
-  -webkit-animation-duration: 0.4s;
-
-  -moz-animation-duration: 0.4s;
-
-  animation-duration: 0.4s;
-
-  -webkit-animation-timing-function: ease-in-out;
-
-  -moz-animation-timing-function: ease-in-out;
-
-  animation-timing-function: ease-in-out;
-
-}
-
-.cd-horizontal-timeline .events-content li.selected {
-
-  /* visible event content */
-
-  position: relative;
-
-  z-index: 2;
-
-  opacity: 1;
-
-  -webkit-transform: translateX(0);
-
-  -moz-transform: translateX(0);
-
-  -ms-transform: translateX(0);
-
-  -o-transform: translateX(0);
-
-  transform: translateX(0);
-
-}
-
-.cd-horizontal-timeline .events-content li.enter-right, .cd-horizontal-timeline .events-content li.leave-right {
-
-  -webkit-animation-name: cd-enter-right;
-
-  -moz-animation-name: cd-enter-right;
-
-  animation-name: cd-enter-right;
-
-}
-
-.cd-horizontal-timeline .events-content li.enter-left, .cd-horizontal-timeline .events-content li.leave-left {
-
-  -webkit-animation-name: cd-enter-left;
-
-  -moz-animation-name: cd-enter-left;
-
-  animation-name: cd-enter-left;
-
-}
-
-.cd-horizontal-timeline .events-content li.leave-right, .cd-horizontal-timeline .events-content li.leave-left {
-
-  -webkit-animation-direction: reverse;
-
-  -moz-animation-direction: reverse;
-
-  animation-direction: reverse;
-
-}
-
-.cd-horizontal-timeline .events-content li > * {
-
-  max-width: 1400px;
-
-  margin: 0 auto;
-
-}
-
-.cd-horizontal-timeline .events-content h4 {
-
-  font-weight: 700;
-
-  margin-bottom: 0px;
-
-  line-height: 20px;
-
-  margin-bottom: 15px;
-
-}
-
-.cd-horizontal-timeline .events-content h4 small {
-
-  font-weight: 400;
-
-  line-height: normal;
-
-  font-size: 15px;
-
-}
-
-.cd-horizontal-timeline .events-content em {
-
-  display: block;
-
-  font-style: italic;
-
-  margin: 10px auto;
-
-}
-
-.cd-horizontal-timeline .events-content em::before {
-
-  content: '- ';
-
-}
-
-.cd-horizontal-timeline .events-content p {
-
-  font-size: 16px;
-
-  margin-top: 15px;
-
-  
-
-}
-
-
-
-@media only screen and (min-width: 768px) {
-
-  
-
-  .cd-horizontal-timeline .events-content em {
-
-    font-size: 1rem;
-
-  }  
-
-}
-
-
-
-@media only screen and (max-width: 767px) {
-
-
-
-  .cd-horizontal-timeline.loaded{ margin: 0;}  
-
-  .cd-horizontal-timeline .timeline{ width: 100%;}
-
-  .cd-horizontal-timeline ol, .cd-horizontal-timeline ul{padding: 0;margin: 0;}
-
-  .cd-horizontal-timeline .events-content h4{ font-size: 16px;}
-
-  .cd-horizontal-timeline .events-content{ margin: 0;}
-
-  
-
-}
-
-
-
-@-webkit-keyframes cd-enter-right {
-
-  0% {
-
-    opacity: 0;
-
-    -webkit-transform: translateX(100%);
-
-  }
-
-  100% {
-
-    opacity: 1;
-
-    -webkit-transform: translateX(0%);
-
-  }
-
-}
-
-@-moz-keyframes cd-enter-right {
-
-  0% {
-
-    opacity: 0;
-
-    -moz-transform: translateX(100%);
-
-  }
-
-  100% {
-
-    opacity: 1;
-
-    -moz-transform: translateX(0%);
-
-  }
-
-}
-
-@keyframes cd-enter-right {
-
-  0% {
-
-    opacity: 0;
-
-    -webkit-transform: translateX(100%);
-
-    -moz-transform: translateX(100%);
-
-    -ms-transform: translateX(100%);
-
-    -o-transform: translateX(100%);
-
-    transform: translateX(100%);
-
-  }
-
-  100% {
-
-    opacity: 1;
-
-    -webkit-transform: translateX(0%);
-
-    -moz-transform: translateX(0%);
-
-    -ms-transform: translateX(0%);
-
-    -o-transform: translateX(0%);
-
-    transform: translateX(0%);
-
-  }
-
-}
-
-@-webkit-keyframes cd-enter-left {
-
-  0% {
-
-    opacity: 0;
-
-    -webkit-transform: translateX(-100%);
-
-  }
-
-  100% {
-
-    opacity: 1;
-
-    -webkit-transform: translateX(0%);
-
-  }
-
-}
-
-@-moz-keyframes cd-enter-left {
-
-  0% {
-
-    opacity: 0;
-
-    -moz-transform: translateX(-100%);
-
-  }
-
-  100% {
-
-    opacity: 1;
-
-    -moz-transform: translateX(0%);
-
-  }
-
-}
-
-@keyframes cd-enter-left {
-
-  0% {
-
-    opacity: 0;
-
-    -webkit-transform: translateX(-100%);
-
-    -moz-transform: translateX(-100%);
-
-    -ms-transform: translateX(-100%);
-
-    -o-transform: translateX(-100%);
-
-    transform: translateX(-100%);
-
-  }
-
-  100% {
-
-    opacity: 1;
-
-    -webkit-transform: translateX(0%);
-
-    -moz-transform: translateX(0%);
-
-    -ms-transform: translateX(0%);
-
-    -o-transform: translateX(0%);
-
-    transform: translateX(0%);
-
-  }
-
-}
-
-.timeline:before{
-
-  content: " ";
-
-    display:none;
-
-    bottom: 0;
-
-    left: 0%;
-
-    width: 0px;
-
-    margin-left: -1.5px;
-
-    background-color: #eeeeee;
-
-}
-  </style> 
-<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <!--     Fonts and icons     -->
-  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
-  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
-  <!-- Nucleo Icons -->
-  <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
-  <!-- CSS Files -->
-  <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="../assets/css/black-dashboard.css?v=1.0.0" rel="stylesheet" />
-  </head>
-  <body class=" ">
-  <div class="wrapper ">
-    <div class="sidebar">
-      <!--
-        Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red | yellow"
-    -->
-      <div class="sidebar-wrapper">
-        <div class="logo">
-          <a class="simple-text logo-mini">
-          </a>
-          <a class="simple-text logo-normal">
-            Campaigns
-          </a>
-        </div>
-        <ul class="nav">
-          <li class="active ">
-            <a>
-              <i class="tim-icons icon-chart-pie-36"></i>
-              <p>Apple Inc.</p>
-            </a>
-          </li>
-          <li>
-            <a href="./icons.html">
-              <i class="tim-icons icon-atom"></i>
-              <p>Ford's Company</p>
-            </a>
-          </li>
-          <li>
-            <a href="./map.html">
-              <i class="tim-icons icon-pin"></i>
-              <p>NABISCO</p>
-            </a>
-          </li>
-          <li>
-            <a href="./notifications.html">
-              <i class="tim-icons icon-bell-55"></i>
-              <p>JP Morgan</p>
-            </a>
-          </li>
-          <li>
-            <a href="./user.html">
-              <i class="tim-icons icon-single-02"></i>
-              <p>Apple Inc.</p>
-            </a>
-          </li>
-          <li>
-            <a href="./tables.html">
-              <i class="tim-icons icon-puzzle-10"></i>
-              <p>Ford's Company</p>
-            </a>
-          </li>
-          <li>
-            <a href="./typography.html">
-              <i class="tim-icons icon-align-center"></i>
-              <p>Nabisco</p>
-            </a>
-          </li>
-          <li>
-            <a href="./rtl.html">
-              <i class="tim-icons icon-world"></i>
-              <p>JP Morgan</p>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div class="main-panel">
-     <!-- Navbar -->
-      <nav class="navbar navbar-expand-lg navbar-absolute navbar-transparent   ">
-        <div class="container-fluid">
-          <div class="navbar-wrapper">
-            <a class="navbar-brand" href="">Product Name</a>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>Personal Website</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/animate.min.css" rel="stylesheet"> 
+  <link href="css/font-awesome.min.css" rel="stylesheet">
+  <link href="css/lightbox.css" rel="stylesheet">
+  <link href="css/main.css" rel="stylesheet">
+  <link id="css-preset" href="css/presets/preset1.css" rel="stylesheet">
+  <link href="css/responsive.css" rel="stylesheet">
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+  <link rel="shortcut icon" href="images/favicon.ico">
+</head><!--/head-->
+
+<body>
+
+  <!--.preloader-->
+  <div class="preloader"> <i class="fa fa-circle-o-notch fa-spin"></i></div>
+  <!--/.preloader-->
+
+  <header id="home">
+    <div id="home-slider" class="carousel slide carousel-fade" data-ride="carousel">
+      <div class="carousel-inner">
+        <div class="item active" style="background-image: url(images/slider/Background.jpg)">
+          <div class="caption">
+            <h1 class="animated fadeInLeftBig">The life of<span> Joey Cheung</span></h1>
+            <p class="animated fadeInRightBig">Data Scientist - Veteran - Life long learner </p>
           </div>
-          <h5 float:right>Welcome Billy Bob! | Sign Out </h5>
         </div>
-      </nav>
-      <!-- End Navbar -->
-      <div class="content">
+      </div>
+    </div><!--/#home-slider-->
+    <div class="main-nav">
+      <div class="container">
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">                 
+            <li class="scroll active"><a href="#home">Home</a></li>
+            <li class="scroll"><a href="#services">Hobbies</a></li> 
+            <li class="scroll"><a href="#about-us">Skills</a></li>                     
+            <li class="scroll"><a href="#portfolio">Portfolio</a></li>
+            <li class="scroll"><a href="#team">About Me</a></li>
+            <li class="scroll"><a href="#contact">Contact</a></li>       
+          </ul>
+        </div>
+      </div>
+    </div><!--/#main-nav-->
+  </header><!--/#home-->
+  <section id="services">
+    <div class="container">
+      <div class="heading wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms">
         <div class="row">
-          <div class="col-lg-6">
-            <div class="card card-chart">
-              <div class="card-header ">
-                <h5 class="card-category">Targeted Segment</h5>
-                <h3 class="card-title"><i class="tim-icons icon-delivery-fast text-info "></i> Apple's Customer Segment</h3>
-              </div>
-              <div class="card-body ">
-                <div class="chart-area">
-                  <canvas id="CountryChart"></canvas>
-                </div>
-              </div>
+          <div class="text-center col-sm-8 col-sm-offset-2">
+            <h2>Hobbies</h2>
+            <p>These are the things that I'm passionate About!</p>
+          </div>
+        </div> 
+      </div>
+      <div class="text-center our-services">
+        <div class="row">
+          <div class="col-sm-4 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="300ms">
+            <div class="service-icon">
+              <i class="fa fa-flask"></i>
+            </div>
+            <div class="service-info">
+              <h3>Programming</h3>
+              <p>Programmer at Dow Jones!</p>
             </div>
           </div>
-          <div class="col-lg-6">
-            <div class="card card-chart">
-              <div class="card-header ">
-                <h5 class="card-category">Corresponding Segment</h5>
-                <h3 class="card-title"><i class="tim-icons icon-delivery-fast text-info "></i> Age</h3>
-              </div>
-              <div class="card-body ">
-                <div class="chart-area">
-                  <canvas id="CountryChart"></canvas>
-                </div>
-              </div>
+          <div class="col-sm-4 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="450ms">
+            <div class="service-icon">
+              <i class="fa fa-umbrella"></i>
+            </div>
+            <div class="service-info">
+              <h3>Martial Arts</h3>
+              <p>Currently nothing but started at 9 years old!</p>
             </div>
           </div>
-          <div class="col-lg-12">
-
-            <div class="card">
-
-              <div class="body">
-
-                <div class="cd-horizontal-timeline loaded">
-
-                  <div class="timeline">
-
-                    <div class="events-wrapper">
-
-                      <div class="events" style="width: 1800px;">
-
-                        <ol>
-
-                          <li><a href="#0" data-date="16/01/2017" class="older-event" style="left: 120px;">16 Jan</a></li>
-
-                          <li><a href="#0" data-date="28/02/2017" style="left: 300px;" class="older-event">28 Feb</a></li>
-
-                          <li><a href="#0" data-date="20/04/2017" style="left: 480px;" class="selected">20 Mar</a></li>
-
-                          <li><a href="#0" data-date="20/05/2017" style="left: 600px;">20 May</a></li>
-
-                          <li><a href="#0" data-date="09/07/2017" style="left: 780px;">09 Jul</a></li>
-
-                          <li><a href="#0" data-date="30/08/2017" style="left: 960px;">30 Aug</a></li>
-
-                          <li><a href="#0" data-date="15/09/2017" style="left: 1020px;">15 Sep</a></li>
-
-                          <li><a href="#0" data-date="01/11/2017" style="left: 1200px;">01 Nov</a></li>
-
-                          <li><a href="#0" data-date="10/12/2017" style="left: 1380px;">10 Dec</a></li>
-
-                          <li><a href="#0" data-date="19/01/2018" style="left: 1500px;">29 Jan</a></li>
-
-                          <li><a href="#0" data-date="03/03/2018" style="left: 1680px;">3 Mar</a></li>
-
-                        </ol>
-
-                        <span class="filling-line" aria-hidden="true" style="transform: scaleX(0.281506);"></span>
-
-                      </div>
-
-                      <!-- .events -->
-
-                    </div>
-
-                    <!-- .events-wrapper -->
-
-                    <ul class="cd-timeline-navigation">
-
-                      <li><a href="#0" class="prev inactive">Prev</a></li>
-
-                      <li><a href="#0" class="next">Next</a></li>
-
-                    </ul>
-
-                    <!-- .cd-timeline-navigation -->
-
-                  </div>
-
-                  <!-- .timeline -->
-
-                </div>
-
-              </div>
-
+          <div class="col-sm-4 wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="550ms">
+            <div class="service-icon">
+              <i class="fa fa-cloud"></i>
             </div>
-
-          </div>
-
-          <div class="col-lg-4 col-md-12">
-            <div class="card card-chart">
-              <div class="card-header ">
-                <h5 class="card-category">Customize</h5>
-                <h3 class="card-title"><i class="tim-icons icon-delivery-fast text-info "></i>Features</h3>
-              </div>
-              <div class="col-sm-2">
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-sm btn-primary btn-simple active" id="0">
-                    <input type="radio" name="options" autocomplete="off" checked> Segment
-                  </label>
-                  <label class="btn btn-sm btn-primary btn-simple " id="1">
-                    <input type="radio" name="options" autocomplete="off"> Time
-                  </label>
-                </div>
-              </div>
-              <div class="card-body ">
-                <div class="table-full-width table-responsive">
-                  <table class="table">
-                    <tbody>
-                      <tr>
-                        <td>
-                          <h4>Attributes</h4>
-                        </td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                            <i class="tim-icons icon-simple-add"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <p class="title">Age: 18 - 25 years old</p>
-                        </td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                            <i class="tim-icons icon-pencil"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <p class="title">Section: Technology in The Wall Street Journal</p>
-                        </td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                            <i class="tim-icons icon-pencil"></i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <p class="title">Income: $100K - $150K</p>
-                        </td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="" class="btn btn-link" data-original-title="Edit Task">
-                            <i class="tim-icons icon-pencil"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+            <div class="service-info">
+              <h3>Super Smash Bros Melee</h3>
+              <p>Professional gamer. Falco is my guy!</p>
             </div>
           </div>
-          <div class="col-lg-8 col-md-12">
-            <div class="card card-chart" overflow:scroll>
-              <div class="card-header">
-                <div class="row">
-                  <div class="col-sm-6 text-left">
-                    <h5 class="card-category">Outcomes</h5>
-                    <h2 class="card-title">Results</h2>
-                  </div>
-                  <div class="col-sm-6">
-                    <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                      <label class="btn btn-sm btn-primary btn-simple active" id="0">
-                        <input type="radio" name="options" autocomplete="off" checked> Generate Report
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <div class="container">
-
-                <div class="row">
-
-                  <div class="col-md-12">
-
-                      <ul class="timeline">
-
-                        <li>
-
-                          <h4>New Web Design</h4>
-
-                          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque diam </p>
-
-                        </li>
-
-                        <li>
-
-                            <h4>21 000 Job Seekers</h4>
-
-                            <p>Curabitur purus sem, malesuada eu stuff stuff stuff some more stuff and some more so here you go!</p>
-
-                        </li>
-
-                        <li>
-
-                          <h4>Awesome Employers</h4>
-
-                          <p>Fusce ullamcorper ligula sit amet quam stuff stuff stuff some more stuff and some more so here you go! </p>
-
-                        </li>
-                      </ul>
-
-                    </div>
-
-                  </div>
-
-                </div>
-              </div>
+          <div class="col-sm-4 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="650ms">
+            <div class="service-icon">
+              <i class="fa fa-coffee"></i>
+            </div>
+            <div class="service-info">
+              <h3>Breakdancing and hip hop dancing</h3>
+              <p>Previously in breakdancing crew and did hip hop on the side</p>
             </div>
           </div>
-        </div>    <div class="col-lg-12">
-      <div class="card card-chart">
-        <div class="card-header ">
-          <div class="row">
-            <div class="col-sm-6 text-left">
-              <h5 class="card-category">Feedback</h5>
-              <h2 class="card-title">What Customers Are Saying</h2>
+          <div class="col-sm-4 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="750ms">
+            <div class="service-icon">
+              <i class="fa fa-bitbucket"></i>
+            </div>
+            <div class="service-info">
+              <h3>Music</h3>
+              <p>Old school hip hop, classical, video game music, violin, and piano</p>
             </div>
           </div>
-        </div>
-        <div class="card-body">
-          <div class="chart-area">
-            <canvas id="chartBig1"></canvas>
+          <div class="col-sm-4 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="850ms">
+            <div class="service-icon">
+              <i class="fa fa-gift"></i>
+            </div>
+            <div class="service-info">
+              <h3>Hanging out</h3>
+              <p>Beer and exploring the world and experiencing life!</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <!--   Core JS Files   -->
-  <script src="../assets/js/core/jquery.min.js"></script>
-  <script src="../assets/js/core/popper.min.js"></script>
-  <script src="../assets/js/core/bootstrap.min.js"></script>
-  <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
-  <!--  Google Maps Plugin    -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-  <!-- Chart JS -->
-  <script src="../assets/js/plugins/chartjs.min.js"></script>
-  <!--  Notifications Plugin    -->
-  <script src="../assets/js/plugins/bootstrap-notify.js"></script>
-  <!-- Control Center for Black Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="../assets/js/black-dashboard.min.js?v=1.0.0" type="text/javascript"></script>
-  <!-- Black Dashboard DEMO methods, don't include it in your project! -->
-  <script src="../assets/demo/demo.js"></script>
-  <script>
-  
-    jQuery(document).ready(function($){
-
-    var timelines = $('.cd-horizontal-timeline'),
-
-		eventsMinDistance = 60;
-
-
-
-	(timelines.length > 0) && initTimeline(timelines);
-
-
-
-	function initTimeline(timelines) {
-
-		timelines.each(function(){
-
-			var timeline = $(this),
-
-				timelineComponents = {};
-
-			//cache timeline components 
-
-			timelineComponents['timelineWrapper'] = timeline.find('.events-wrapper');
-
-			timelineComponents['eventsWrapper'] = timelineComponents['timelineWrapper'].children('.events');
-
-			timelineComponents['fillingLine'] = timelineComponents['eventsWrapper'].children('.filling-line');
-
-			timelineComponents['timelineEvents'] = timelineComponents['eventsWrapper'].find('a');
-
-			timelineComponents['timelineDates'] = parseDate(timelineComponents['timelineEvents']);
-
-			timelineComponents['eventsMinLapse'] = minLapse(timelineComponents['timelineDates']);
-
-			timelineComponents['timelineNavigation'] = timeline.find('.cd-timeline-navigation');
-
-			timelineComponents['eventsContent'] = timeline.children('.events-content');
-
-
-
-			//assign a left postion to the single events along the timeline
-
-			setDatePosition(timelineComponents, eventsMinDistance);
-
-			//assign a width to the timeline
-
-			var timelineTotWidth = setTimelineWidth(timelineComponents, eventsMinDistance);
-
-			//the timeline has been initialize - show it
-
-			timeline.addClass('loaded');
-
-
-
-			//detect click on the next arrow
-
-			timelineComponents['timelineNavigation'].on('click', '.next', function(event){
-
-				event.preventDefault();
-
-				updateSlide(timelineComponents, timelineTotWidth, 'next');
-
-			});
-
-			//detect click on the prev arrow
-
-			timelineComponents['timelineNavigation'].on('click', '.prev', function(event){
-
-				event.preventDefault();
-
-				updateSlide(timelineComponents, timelineTotWidth, 'prev');
-
-			});
-
-			//detect click on the a single event - show new event content
-
-			timelineComponents['eventsWrapper'].on('click', 'a', function(event){
-
-				event.preventDefault();
-
-				timelineComponents['timelineEvents'].removeClass('selected');
-
-				$(this).addClass('selected');
-
-				updateOlderEvents($(this));
-
-				updateFilling($(this), timelineComponents['fillingLine'], timelineTotWidth);
-
-				updateVisibleContent($(this), timelineComponents['eventsContent']);
-
-			});
-
-
-
-			//on swipe, show next/prev event content
-
-			timelineComponents['eventsContent'].on('swipeleft', function(){
-
-				var mq = checkMQ();
-
-				( mq == 'mobile' ) && showNewContent(timelineComponents, timelineTotWidth, 'next');
-
-			});
-
-			timelineComponents['eventsContent'].on('swiperight', function(){
-
-				var mq = checkMQ();
-
-				( mq == 'mobile' ) && showNewContent(timelineComponents, timelineTotWidth, 'prev');
-
-			});
-
-
-
-			//keyboard navigation
-
-			$(document).keyup(function(event){
-
-				if(event.which=='37' && elementInViewport(timeline.get(0)) ) {
-
-					showNewContent(timelineComponents, timelineTotWidth, 'prev');
-
-				} else if( event.which=='39' && elementInViewport(timeline.get(0))) {
-
-					showNewContent(timelineComponents, timelineTotWidth, 'next');
-
-				}
-
-			});
-
-		});
-
-	}
-
-
-
-	function updateSlide(timelineComponents, timelineTotWidth, string) {
-
-		//retrieve translateX value of timelineComponents['eventsWrapper']
-
-		var translateValue = getTranslateValue(timelineComponents['eventsWrapper']),
-
-			wrapperWidth = Number(timelineComponents['timelineWrapper'].css('width').replace('px', ''));
-
-		//translate the timeline to the left('next')/right('prev') 
-
-		(string == 'next') 
-
-			? translateTimeline(timelineComponents, translateValue - wrapperWidth + eventsMinDistance, wrapperWidth - timelineTotWidth)
-
-			: translateTimeline(timelineComponents, translateValue + wrapperWidth - eventsMinDistance);
-
-	}
-
-
-
-	function showNewContent(timelineComponents, timelineTotWidth, string) {
-
-		//go from one event to the next/previous one
-
-		var visibleContent =  timelineComponents['eventsContent'].find('.selected'),
-
-			newContent = ( string == 'next' ) ? visibleContent.next() : visibleContent.prev();
-
-
-
-		if ( newContent.length > 0 ) { //if there's a next/prev event - show it
-
-			var selectedDate = timelineComponents['eventsWrapper'].find('.selected'),
-
-				newEvent = ( string == 'next' ) ? selectedDate.parent('li').next('li').children('a') : selectedDate.parent('li').prev('li').children('a');
-
-			
-
-			updateFilling(newEvent, timelineComponents['fillingLine'], timelineTotWidth);
-
-			updateVisibleContent(newEvent, timelineComponents['eventsContent']);
-
-			newEvent.addClass('selected');
-
-			selectedDate.removeClass('selected');
-
-			updateOlderEvents(newEvent);
-
-			updateTimelinePosition(string, newEvent, timelineComponents);
-
-		}
-
-	}
-
-
-
-	function updateTimelinePosition(string, event, timelineComponents) {
-
-		//translate timeline to the left/right according to the position of the selected event
-
-		var eventStyle = window.getComputedStyle(event.get(0), null),
-
-			eventLeft = Number(eventStyle.getPropertyValue("left").replace('px', '')),
-
-			timelineWidth = Number(timelineComponents['timelineWrapper'].css('width').replace('px', '')),
-
-			timelineTotWidth = Number(timelineComponents['eventsWrapper'].css('width').replace('px', ''));
-
-		var timelineTranslate = getTranslateValue(timelineComponents['eventsWrapper']);
-
-
-
-        if( (string == 'next' && eventLeft > timelineWidth - timelineTranslate) || (string == 'prev' && eventLeft < - timelineTranslate) ) {
-
-        	translateTimeline(timelineComponents, - eventLeft + timelineWidth/2, timelineWidth - timelineTotWidth);
-
-        }
-
-	}
-
-
-
-	function translateTimeline(timelineComponents, value, totWidth) {
-
-		var eventsWrapper = timelineComponents['eventsWrapper'].get(0);
-
-		value = (value > 0) ? 0 : value; //only negative translate value
-
-		value = ( !(typeof totWidth === 'undefined') &&  value < totWidth ) ? totWidth : value; //do not translate more than timeline width
-
-		setTransformValue(eventsWrapper, 'translateX', value+'px');
-
-		//update navigation arrows visibility
-
-		(value == 0 ) ? timelineComponents['timelineNavigation'].find('.prev').addClass('inactive') : timelineComponents['timelineNavigation'].find('.prev').removeClass('inactive');
-
-		(value == totWidth ) ? timelineComponents['timelineNavigation'].find('.next').addClass('inactive') : timelineComponents['timelineNavigation'].find('.next').removeClass('inactive');
-
-	}
-
-
-
-	function updateFilling(selectedEvent, filling, totWidth) {
-
-		//change .filling-line length according to the selected event
-
-		var eventStyle = window.getComputedStyle(selectedEvent.get(0), null),
-
-			eventLeft = eventStyle.getPropertyValue("left"),
-
-			eventWidth = eventStyle.getPropertyValue("width");
-
-		eventLeft = Number(eventLeft.replace('px', '')) + Number(eventWidth.replace('px', ''))/2;
-
-		var scaleValue = eventLeft/totWidth;
-
-		setTransformValue(filling.get(0), 'scaleX', scaleValue);
-
-	}
-
-
-
-	function setDatePosition(timelineComponents, min) {
-
-		for (i = 0; i < timelineComponents['timelineDates'].length; i++) { 
-
-		    var distance = daydiff(timelineComponents['timelineDates'][0], timelineComponents['timelineDates'][i]),
-
-		    	distanceNorm = Math.round(distance/timelineComponents['eventsMinLapse']) + 2;
-
-		    timelineComponents['timelineEvents'].eq(i).css('left', distanceNorm*min+'px');
-
-		}
-
-	}
-
-
-
-	function setTimelineWidth(timelineComponents, width) {
-
-		var timeSpan = daydiff(timelineComponents['timelineDates'][0], timelineComponents['timelineDates'][timelineComponents['timelineDates'].length-1]),
-
-			timeSpanNorm = timeSpan/timelineComponents['eventsMinLapse'],
-
-			timeSpanNorm = Math.round(timeSpanNorm) + 4,
-
-			totalWidth = timeSpanNorm*width;
-
-		timelineComponents['eventsWrapper'].css('width', totalWidth+'px');
-
-		updateFilling(timelineComponents['eventsWrapper'].find('a.selected'), timelineComponents['fillingLine'], totalWidth);
-
-		updateTimelinePosition('next', timelineComponents['eventsWrapper'].find('a.selected'), timelineComponents);
-
-	
-
-		return totalWidth;
-
-	}
-
-
-
-	function updateVisibleContent(event, eventsContent) {
-
-		var eventDate = event.data('date'),
-
-			visibleContent = eventsContent.find('.selected'),
-
-			selectedContent = eventsContent.find('[data-date="'+ eventDate +'"]'),
-
-			selectedContentHeight = selectedContent.height();
-
-
-
-		if (selectedContent.index() > visibleContent.index()) {
-
-			var classEnetering = 'selected enter-right',
-
-				classLeaving = 'leave-left';
-
-		} else {
-
-			var classEnetering = 'selected enter-left',
-
-				classLeaving = 'leave-right';
-
-		}
-
-
-
-		selectedContent.attr('class', classEnetering);
-
-		visibleContent.attr('class', classLeaving).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-
-			visibleContent.removeClass('leave-right leave-left');
-
-			selectedContent.removeClass('enter-left enter-right');
-
-		});
-
-		eventsContent.css('height', selectedContentHeight+'px');
-
-	}
-
-
-
-	function updateOlderEvents(event) {
-
-		event.parent('li').prevAll('li').children('a').addClass('older-event').end().end().nextAll('li').children('a').removeClass('older-event');
-
-	}
-
-
-
-	function getTranslateValue(timeline) {
-
-		var timelineStyle = window.getComputedStyle(timeline.get(0), null),
-
-			timelineTranslate = timelineStyle.getPropertyValue("-webkit-transform") ||
-
-         		timelineStyle.getPropertyValue("-moz-transform") ||
-
-         		timelineStyle.getPropertyValue("-ms-transform") ||
-
-         		timelineStyle.getPropertyValue("-o-transform") ||
-
-         		timelineStyle.getPropertyValue("transform");
-
-
-
-        if( timelineTranslate.indexOf('(') >=0 ) {
-
-        	var timelineTranslate = timelineTranslate.split('(')[1];
-
-    		timelineTranslate = timelineTranslate.split(')')[0];
-
-    		timelineTranslate = timelineTranslate.split(',');
-
-    		var translateValue = timelineTranslate[4];
-
-        } else {
-
-        	var translateValue = 0;
-
-        }
-
-
-
-        return Number(translateValue);
-
-	}
-
-
-
-	function setTransformValue(element, property, value) {
-
-		element.style["-webkit-transform"] = property+"("+value+")";
-
-		element.style["-moz-transform"] = property+"("+value+")";
-
-		element.style["-ms-transform"] = property+"("+value+")";
-
-		element.style["-o-transform"] = property+"("+value+")";
-
-		element.style["transform"] = property+"("+value+")";
-
-	}
-
-
-
-	//based on http://stackoverflow.com/questions/542938/how-do-i-get-the-number-of-days-between-two-dates-in-javascript
-
-	function parseDate(events) {
-
-		var dateArrays = [];
-
-		events.each(function(){
-
-			var singleDate = $(this),
-
-				dateComp = singleDate.data('date').split('T');
-
-			if( dateComp.length > 1 ) { //both DD/MM/YEAR and time are provided
-
-				var dayComp = dateComp[0].split('/'),
-
-					timeComp = dateComp[1].split(':');
-
-			} else if( dateComp[0].indexOf(':') >=0 ) { //only time is provide
-
-				var dayComp = ["2000", "0", "0"],
-
-					timeComp = dateComp[0].split(':');
-
-			} else { //only DD/MM/YEAR
-
-				var dayComp = dateComp[0].split('/'),
-
-					timeComp = ["0", "0"];
-
-			}
-
-			var	newDate = new Date(dayComp[2], dayComp[1]-1, dayComp[0], timeComp[0], timeComp[1]);
-
-			dateArrays.push(newDate);
-
-		});
-
-	    return dateArrays;
-
-	}
-
-
-
-	function daydiff(first, second) {
-
-	    return Math.round((second-first));
-
-	}
-
-
-
-	function minLapse(dates) {
-
-		//determine the minimum distance among events
-
-		var dateDistances = [];
-
-		for (i = 1; i < dates.length; i++) { 
-
-		    var distance = daydiff(dates[i-1], dates[i]);
-
-		    dateDistances.push(distance);
-
-		}
-
-		return Math.min.apply(null, dateDistances);
-
-	}
-
-
-
-	/*
-
-		How to tell if a DOM element is visible in the current viewport?
-
-		http://stackoverflow.com/questions/123999/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport
-
-	*/
-
-	function elementInViewport(el) {
-
-		var top = el.offsetTop;
-
-		var left = el.offsetLeft;
-
-		var width = el.offsetWidth;
-
-		var height = el.offsetHeight;
-
-
-
-		while(el.offsetParent) {
-
-		    el = el.offsetParent;
-
-		    top += el.offsetTop;
-
-		    left += el.offsetLeft;
-
-		}
-
-
-
-		return (
-
-		    top < (window.pageYOffset + window.innerHeight) &&
-
-		    left < (window.pageXOffset + window.innerWidth) &&
-
-		    (top + height) > window.pageYOffset &&
-
-		    (left + width) > window.pageXOffset
-
-		);
-
-	}
-
-
-
-	function checkMQ() {
-
-		//check if mobile or desktop device
-
-		return window.getComputedStyle(document.querySelector('.cd-horizontal-timeline'), '::before').getPropertyValue('content').replace(/'/g, "").replace(/"/g, "");
-
-	}
-
-}); 
-  
-    $(document).ready(function() {
-      $().ready(function() {
-        $sidebar = $('.sidebar');
-        $navbar = $('.navbar');
-
-        $full_page = $('.full-page');
-
-        $sidebar_responsive = $('body > .navbar-collapse');
-        sidebar_mini_active = true;
-        white_color = false;
-
-        window_width = $(window).width();
-
-        fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
-
-        $('.fixed-plugin a').click(function(event) {
-        // Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
-          if ($(this).hasClass('switch-trigger')) {
-            if (event.stopPropagation) {
-              event.stopPropagation();
-            } else if (window.event) {
-              window.event.cancelBubble = true;
-            }
-          }
-        });
-
-        $('.fixed-plugin .background-color span').click(function() {
-          $(this).siblings().removeClass('active');
-          $(this).addClass('active');
-
-          var new_color = $(this).data('color');
-
-          if ($sidebar.length != 0) {
-              $sidebar.attr('data-color', new_color);
-            }
-
-            if ($navbar.length != 0) {
-              $navbar.attr('data-color', new_color);
-            }
-
-            if ($full_page.length != 0) {
-              $full_page.attr('filter-color', new_color);
-            }
-
-            if ($sidebar_responsive.length != 0) {
-              $sidebar_responsive.attr('data-color', new_color);
-            }
-          });
-
-          $('.switch-sidebar-mini input').on("switchChange.bootstrapSwitch", function() {
-            var $btn = $(this);
-
-            if (sidebar_mini_active == true) {
-              $('body').removeClass('sidebar-mini');
-              sidebar_mini_active = false;
-              blackDashboard.showSidebarMessage('Sidebar mini deactivated...');
-            } else {
-              $('body').addClass('sidebar-mini');
-              sidebar_mini_active = true;
-              blackDashboard.showSidebarMessage('Sidebar mini activated...');
-            }
-
-            // we simulate the window Resize so the charts will get updated in realtime.
-            var simulateWindowResize = setInterval(function() {
-              window.dispatchEvent(new Event('resize'));
-            }, 180);
-
-            // we stop the simulation of Window Resize after the animations are completed
-            setTimeout(function() {
-              clearInterval(simulateWindowResize);
-            }, 1000);
-          });
-
-          $('.switch-change-color input').on("switchChange.bootstrapSwitch", function() {
-            var $btn = $(this);
-
-            if (white_color == true) {
-
-              $('body').addClass('change-background');
-              setTimeout(function() {
-                $('body').removeClass('change-background');
-                $('body').removeClass('white-content');
-              }, 900);
-              white_color = false;
-            } else {
-
-              $('body').addClass('change-background');
-              setTimeout(function() {
-                $('body').removeClass('change-background');
-                $('body').addClass('white-content');
-              }, 900);
-
-              white_color = true;
-            }
-          });
-
-          $('.light-badge').click(function() {
-            $('body').addClass('white-content');
-          });
-
-          $('.dark-badge').click(function() {
-            $('body').removeClass('white-content');
-          });
-        });
-      });
-    </script>
-    <script>
-      $(document).ready(function() {
-        // Javascript method's body can be found in assets/js/demos.js
-        demo.initDashboardPageCharts();
-
-      });
-    </script>
-  </body>
+  </section><!--/#services-->
+  <section id="about-us" class="parallax">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="about-info wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms">
+            <h2>Skills</h2>
+            <p>Don't have any! Just kidding! </p>
+            <p>This section pertains specifically to the programming portion of things and these are the skills that I have obtained throughout the years of studying computer science. Just look for yourself!</p>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="our-skills wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="300ms">
+            <div class="single-skill wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="300ms">
+                <p class="lead">Data Science</p>
+              <div class="progress">
+                <div class="progress-bar progress-bar-primary six-sec-ease-in-out" role="progressbar"  aria-valuetransitiongoal="95">95%</div>
+              </div>
+            </div>
+            <div class="single-skill wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="400ms">
+              <p class="lead">Web Development</p>
+              <div class="progress">
+                <div class="progress-bar progress-bar-primary six-sec-ease-in-out" role="progressbar"  aria-valuetransitiongoal="75">75%</div>
+              </div>
+            </div>
+            <div class="single-skill wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="500ms">
+              <p class="lead">Mobile Development</p>
+              <div class="progress">
+                <div class="progress-bar progress-bar-primary six-sec-ease-in-out" role="progressbar"  aria-valuetransitiongoal="50">50%</div>
+              </div>
+            </div>
+            <div class="single-skill wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="600ms">
+              <p class="lead">Game Development</p>
+              <div class="progress">
+                <div class="progress-bar progress-bar-primary six-sec-ease-in-out" role="progressbar"  aria-valuetransitiongoal="65">65%</div>
+              </div>
+            </div>
+            <div class="single-skill wow fadeInDown" data-wow-duration="1000ms" data-wow-delay="600ms">
+              <p class="lead">Arch Linux</p>
+              <div class="progress">
+                <div class="progress-bar progress-bar-primary six-sec-ease-in-out" role="progressbar"  aria-valuetransitiongoal="85">85%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section><!--/#about-us-->
+
+  <section id="portfolio">
+    <div class="container">
+      <div class="row">
+        <div class="heading text-center col-sm-8 col-sm-offset-2 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms">
+          <h2>My Portfolio</h2>
+          <p>All of the projects that I've done for programming! Look at all the cool stuff that I've done! :D</p>
+        </div>
+      </div> 
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3">
+          <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="300ms">
+            <div class="folio-image">
+              <img class="img-responsive" src="images/portfolio/1.jpg" alt="">
+            </div>
+            <div class="overlay">
+              <div class="overlay-content">
+                <div class="overlay-text">
+                  <div class="folio-info">
+                    <h3>MsPacman RL</h3>
+                    <p>Reinforcement Learning</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="folio-item wow fadeInLeftBig" data-wow-duration="1000ms" data-wow-delay="400ms">
+            <div class="folio-image">
+              <img class="img-responsive" src="images/portfolio/2.jpg" alt="">
+            </div>
+            <div class="overlay">
+              <div class="overlay-content">
+                <div class="overlay-text">
+                  <div class="folio-info">
+                    <h3>Dotfiles</h3>
+                    <p>Arch Linux</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="500ms">
+            <div class="folio-image">
+              <img class="img-responsive" src="images/portfolio/3.jpg" alt="">
+            </div>
+            <div class="overlay">
+              <div class="overlay-content">
+                <div class="overlay-text">
+                  <div class="folio-info">
+                    <h3>Grocery List Manager</h3>
+                    <p>Mobile Development</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="folio-item wow fadeInLeftBig" data-wow-duration="1000ms" data-wow-delay="600ms">
+            <div class="folio-image">
+              <img class="img-responsive" src="images/portfolio/4.jpg" alt="">
+            </div>
+            <div class="overlay">
+              <div class="overlay-content">
+                <div class="overlay-text">
+                  <div class="folio-info">
+                    <h3>SARA</h3>
+                    <p>Web Development</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="700ms">
+            <div class="folio-image">
+              <img class="img-responsive" src="images/portfolio/5.jpg" alt="">
+            </div>
+            <div class="overlay">
+              <div class="overlay-content">
+                <div class="overlay-text">
+                  <div class="folio-info">
+                    <h3>Smash Twitter</h3>
+                    <p>Sentiment Analysis, Natural Language Processing</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="folio-item wow fadeInLeftBig" data-wow-duration="1000ms" data-wow-delay="800ms">
+            <div class="folio-image">
+              <img class="img-responsive" src="images/portfolio/6.jpg" alt="">
+            </div>
+            <div class="overlay">
+              <div class="overlay-content">
+                <div class="overlay-text">
+                  <div class="folio-info">
+                    <h3>Chess</h3>
+                    <p>Game Development</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="folio-item wow fadeInRightBig" data-wow-duration="1000ms" data-wow-delay="900ms">
+            <div class="folio-image">
+              <img class="img-responsive" src="images/portfolio/7.jpg" alt="">
+            </div>
+            <div class="overlay">
+              <div class="overlay-content">
+                <div class="overlay-text">
+                  <div class="folio-info">
+                    <h3>Weather Prediction</h3>
+                    <p>Supervised Learning, Linear Regression</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="folio-item wow fadeInLeftBig" data-wow-duration="1000ms" data-wow-delay="1000ms">
+            <div class="folio-image">
+              <img class="img-responsive" src="images/portfolio/8.jpg" alt="">
+            </div>
+            <div class="overlay">
+              <div class="overlay-content">
+                <div class="overlay-text">
+                  <div class="folio-info">
+                    <h3>Wine Quality</h3>
+                    <p>Supervised Learning, Multiple Linear Regression</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section><!--/#portfolio-->
+
+  <section id="team">
+    <div class="container">
+      <div class="row">
+        <div class="heading text-center col-sm-8 col-sm-offset-2 wow fadeInUp" data-wow-duration="1200ms" data-wow-delay="300ms">
+          <h2>About me</h2>
+          <p>I'd like to think that I'm a simple person. I like to enjoy the finer things in life, but I quickly realize that it's not enough. The human brain has an incessant appetite; it aches for something more, something a bit more purposeful, a bit more intricate; something a bit more challenging. <br><br>That is the duality that defines my being. I am the simple man who craves complexity.</p>
+        </div>
+      </div>
+      <div class="team-members">
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="team-member wow flipInY" data-wow-duration="1000ms" data-wow-delay="300ms">
+              <div class="member-image">
+                <img class="img-responsive" src="images/team/1.jpg" alt="">
+              </div>
+              <div class="member-info">
+                <h3>Programmer</h3>
+                <h4>Software Engineer at Dow Jones</h4>
+                <p>Computer Science major with a passion for Data Science</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="team-member wow flipInY" data-wow-duration="1000ms" data-wow-delay="500ms">
+              <div class="member-image">
+                <img class="img-responsive" src="images/team/2.jpg" alt="">
+              </div>
+              <div class="member-info">
+                <h3>Veteran</h3>
+                <h4>US Army Military Police</h4>
+                <p>Served in the United States Army from 2011 - 2017. Deployed to Guantanamo Bay, Cuba.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="team-member wow flipInY" data-wow-duration="1000ms" data-wow-delay="800ms">
+              <div class="member-image">
+                <img class="img-responsive" src="images/team/3.jpg" alt="">
+              </div>
+              <div class="member-info">
+                <h3>Martial Arts</h3>
+                <h4>Martial arts practicioner</h4>
+                <p>2nd degree blackbelt in Taekwondo, 5 years in Wing Chun, 3 years in Brazilian Jiu Jitsu, 1 year Choy Lee fut, and 1 year Muay Thai</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="team-member wow flipInY" data-wow-duration="1000ms" data-wow-delay="1100ms">
+              <div class="member-image">
+                <img class="img-responsive" src="images/team/4.jpg" alt="">
+              </div>
+              <div class="member-info">
+                <h3>Student of Life</h3>
+                <h4>Life long learner</h4>
+                <p>When you talk, you are only repeating what you already know, but if you listen, you may learn something new.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>            
+    </div>
+  </section><!--/#team-->
+
+  <section id="contact">
+    <div id="contact-us" class="parallax">
+      <div class="container">
+        <div class="row">
+          <div class="heading text-center col-sm-8 col-sm-offset-2 wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms">
+            <h2>Contact </h2>
+          </div>
+        </div>
+            <div class="col-sm-4"></div>
+            <div class="col-sm-8">
+              <div class="contact-info wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms">
+                <ul class="address">
+                  <li><i class="fa fa-map-marker"></i> <span> Address:</span> 146-11 56rd Flushing NY 11355 </li>
+                  <li><i class="fa fa-phone"></i> <span> Phone:</span> +1 (520) 895 9082</li>
+                  <li><i class="fa fa-envelope"></i> <span> Email:</span> joeycheung0@gmail.com</li>
+                  <li><i class="fa fa-globe"></i> <span> Website:</span> <a href="https://joeycheung.github.io/">joey.cheung@github.io</a></li>
+                </ul>
+              </div>                            
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>        
+  </section><!--/#contact-->
+  <footer id="footer">
+    <div class="footer-top wow fadeInUp" data-wow-duration="1000ms" data-wow-delay="300ms">
+      <div class="container text-center">
+        <div class="social-icons">
+          <ul>
+            <li><a class="dribbble" href="https://github.com/JoeyCheung"><i class="fa fa-github"></i></a></li>
+            <li><a class="linkedin" href="https://www.linkedin.com/in/joey-cheung0/"><i class="fa fa-linkedin"></i></a></li>
+            <li><a class="twitter" href="#"><i class="fa fa-twitter"></i></a></li>
+            <li><a class="facebook" href="#"><i class="fa fa-facebook"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+  <script type="text/javascript" src="js/jquery.inview.min.js"></script>
+  <script type="text/javascript" src="js/wow.min.js"></script>
+  <script type="text/javascript" src="js/mousescroll.js"></script>
+  <script type="text/javascript" src="js/smoothscroll.js"></script>
+  <script type="text/javascript" src="js/jquery.countTo.js"></script>
+  <script type="text/javascript" src="js/lightbox.min.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+
+</body>
 </html>
